@@ -1,0 +1,16 @@
+{% extends '../layouts/layout.html' %}
+{% block title %} 📚图书展示页面 {% endblock %}
+{% block head %}
+{% endblock  %}
+{% block content %}
+    <ul>
+    {% for val in data %}
+        <li>[[ val.author ]]</li>    
+    {% endfor %}
+    </ul>
+{% endblock %}
+{% block scripts %}
+<script>
+    console.log("展示图书");
+</script>
+{% endblock  %}

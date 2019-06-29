@@ -1,0 +1,40 @@
+{% extends '../layouts/layout.html' %}
+{% block title %} 📚图书管理首页 {% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/styles/index.css">
+{% endblock  %}
+{% block content %}
+<h1>[[data]]</h1>
+<div id="app-6">
+    <p>{{ message }}</p>
+    <input v-model="message">
+</div>
+<input type="button" value="函数式编程节流" id="js-btn" />
+{% endblock %}
+{% block scripts %}
+<script src="/scripts/yd.js"></script>
+<script type="module">
+    // console.log("🌶",_);
+    // _.map()
+    // _("京程一灯🏮").map(function(){
+    //     consoile.log("123")
+    // });
+    // _.map("京程一灯🏮", function () {
+    //     consoile.log("123")
+    // });
+    const btn = document.getElementById("js-btn");
+    btn.addEventListener("click", _.throttle(() => {
+        console.log(Math.random())
+        // $.ajax({})
+    }));
+    import("/scripts/index.js").then((_) => {
+        console.log(_.default);
+    })
+</script>
+<script type="nomodule" src="https://cdn.bootcss.com/systemjs/3.1.6/system.js"></script>
+<script type="nomodule">
+    System.import("/scripts/index-bundle.js").then((_) => {
+        console.log(_.default);
+    })
+</script>
+{% endblock  %}
