@@ -1,55 +1,37 @@
 const pluginName = 'htmlAfterPlugin'
-const hackCode = `(function() {
-  var check = document.createElement('script');
-  if (!('noModule' in check) && 'onbeforeload' in check) {
-    var support = false;
-    document.addEventListener('beforeload', function(e) {
-      if (e.target === check) {
-        support = true;
-      } else if (!e.target.hasAttribute('nomodule') || !support) {
-        return;
-      }
-      e.preventDefault();
-    }, true);
-
-    check.type = 'module';
-    check.src = '.';
-    document.head.appendChild(check);
-    check.remove();
+const assetsHelp = (data) => {
+  let js = []
+  let css = []
+  const dir = {
+    js: item => `<script type="module" src="${item}"></script>`,
+    css: item => `<link rel="stylesheet" href="${item}">`
   }
-}());`
-
-class HtmlAfterPlugin {
-  constructor ({isHack} = options) {
-    this.isHack = isHack
+  for (let jsitem of data.js) {
+    js.push(dir.js(jsitem))
   }
-  apply(compiler) {
-    compiler.hooks.compilation.tap(pluginName, compilation => {
-      compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(pluginName, (htmlPluginDate, cb) => {
-        htmlPluginDate.body.forEach((tag) => {
-          if(tag.tagName === 'script') {
-            if (/.bundle./.test(tag.attributes.src)) {
-              delete tag.attributes.type
-              tag.attributes.nomodule = ''
-            } else {
-              tag.attributes.type = 'module'
-            }
-          }
-          if (this.isHack) {
-            htmlPluginDate.body.push({
-              tagName: 'script',
-              closeTag: true,
-              innerHTML: hackCode
-            })
-          }
-          cb(null, htmlPluginDate)
-        })
-      })
-      compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(pluginName, (htmlPluginDate) => {
-        htmlPluginDate.html = htmlPluginDate.html.replace(/\snomodule=""/g, ' nomodule')
-      })
-    });
+  for (let cssitem of data.css) {
+    css.push(dir.css(cssitem))
+  }
+  return {
+    js,
+    css
   }
 }
 
-module.exports = HtmlAfterPlugin
+
+class HtmlAfterPlugin {
+  apply(compiler) {
+    compiler.hooks.compilation.tap(pluginName, compilation => {
+      compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(pluginName, htmlPluginData => {
+        let _html = htmlPluginData.html
+        _html = _html.replace(/@components/g, '../../../components')
+        const result = assetsHelp(htmlPluginData.assets)
+        _html = _html.replace('<!-- injectjs -->', result.js.join(''))
+        _html = _html.replace('<!-- injectcss -->', result.css.join(''))
+        htmlPluginData.html = _html
+      })
+    })
+  }
+}
+
+module.exports = HtmlAfterPlugin;

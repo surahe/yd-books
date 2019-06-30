@@ -7,8 +7,7 @@ class BooksController {
         const result = await books.getData({
             url: "books/index"
         });
-        console.log(result);
-        ctx.body = await ctx.render('books/list', {
+        ctx.body = await ctx.render('books/pages/list', {
             data: result.data
         });
     }

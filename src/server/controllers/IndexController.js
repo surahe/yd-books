@@ -2,8 +2,7 @@ class IndexController {
     constructor() {
     }
     async actionIndex(ctx, next) {
-        // console.log(ctxy);
-        ctx.body = await ctx.render('books/index',{
+        ctx.body = await ctx.render('books/pages/index',{
             data:"🏮京程一灯"
         });
     }
