@@ -2,7 +2,7 @@
  * @fileoverview 实现Books数据模型
  * @author yuanzhijia@yidengxuetang.com
  */
-const SafeRequest = require("../utils/SafeRequest");
+import SafeRequest from "../utils/SafeRequest";
 class Books {
     /**
      * Books类 获取后台有关于图书相关的数据类
@@ -27,4 +27,4 @@ class Books {
         return safeRequest.fetch();
     }
 }
-module.exports = Books;
+export default Books;
