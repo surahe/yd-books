@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock  %}</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
     {% block head %}{% endblock  %}
 </head>
 <body>
+    {% include "../../components/banner/banner.html" %}
     {% block content %}{% endblock  %}
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     {% block scripts %}{% endblock  %}
