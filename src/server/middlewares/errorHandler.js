@@ -1,11 +1,11 @@
 const errorHandler = {
-    error(app,logger) {
+    error(app) {
         app.use(async (ctx, next) => {
             try {
                 await next();
             } catch (error) {
                 //如果node挂了 及时的查错
-                logger.error(error);
+                ctx.logger.error(error);
                 ctx.status = error.status || 500;
                 ctx.body = "错误";
             }

@@ -1,10 +1,14 @@
+import { route, GET } from 'awilix-koa'
+@route('/')
 class IndexController {
     constructor() {
     }
+    @route('/')
+    @GET()
     async actionIndex(ctx, next) {
-        ctx.body = await ctx.render('books/pages/index',{
-            data:"🏮京程一灯"
-        });
+        ctx.body = {
+            data:'🏮京程一灯'
+        }
     }
 }
-export default IndexController;
+export default IndexController

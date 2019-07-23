@@ -12,7 +12,10 @@ function buildDev() {
     gulp.src(entry)
       .pipe(babel({
         babelrc: false, // 停止查找babel配置文件
-        "plugins": ["@babel/plugin-transform-modules-commonjs"]
+        "plugins": [
+          ["@babel/plugin-proposal-decorators", { "legacy": true }],
+          "@babel/plugin-transform-modules-commonjs"
+        ]
       }))
       .pipe(gulp.dest('dist'));
   })
@@ -23,7 +26,10 @@ function buildProd() {
     .pipe(babel({
       babelrc: false, // 停止查找babel配置文件
       ignore: clearEntry,
-      "plugins": ["@babel/plugin-transform-modules-commonjs"]
+      "plugins": [
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        "@babel/plugin-transform-modules-commonjs"
+      ]
     }))
     .pipe(gulp.dest('dist'));
 }
