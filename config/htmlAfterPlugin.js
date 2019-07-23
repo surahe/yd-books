@@ -3,7 +3,7 @@ const assetsHelp = (data) => {
   let js = []
   let css = []
   const dir = {
-    js: item => `<script type="module" src="${item}"></script>`,
+    js: item => `<script type="module" class="lazyload-js" src="${item}"></script>`,
     css: item => `<link rel="stylesheet" href="${item}">`
   }
   for (let jsitem of data.js) {
