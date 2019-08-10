@@ -43,3 +43,15 @@ app.use(loadControllers(__dirname + "/controllers/*.js"))
 app.listen(config.port, () => {
     console.log("图书管理平台启动成功📚");
 });
+process.on("uncaughtException", function (err) { 
+    // g.notifyError(a, { type: "uncaughtError" }, 
+    // function () { process.exit(1) }) 
+    logger.error(err);
+})
+process.on("unhandledRejection", function (info) {
+    // g.notifyError(a, { type: "uncaughtError" }) 
+    logger.error(info.reason);
+});
+app.on("error", function (err) { 
+    logger.error(info.reason);
+})
