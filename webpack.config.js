@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlAfterPlugin = require('./config/htmlAfterPlugin')
 const argv = require('yargs-parser')(process.argv.slice(2))
 const merge = require('webpack-merge')
@@ -6,6 +7,7 @@ const {join} = require('path')
 const glob = require('glob')
 
 const _mode = argv.mode || 'development'
+const _modeFlag = _mode === 'development'
 const _mergeConfig = require(`./config/webpack.${_mode}.js`)
 const files = glob.sync('./src/web/views/**/*.entry.js') // 寻找入口
 
@@ -47,13 +49,28 @@ const webpackConfig = {
             presets: ['@babel/preset-env']
           }
         }
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          // 'style-loader',
+          {loader: MiniCssExtractPlugin.loader},
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader'
+        ]
       }
     ]
   },
   plugins: [
     ..._plugins,
+    new MiniCssExtractPlugin({
+      filename: 'styles/[name].css',
+      chunkFilename: 'styles/[id].css',
+      ignoreOrder: false, // Enable to remove warnings about conflicting order
+    }),
     new HtmlAfterPlugin()
-  ]
+  ],
+  watch: _modeFlag
 }
 
 module.exports = merge(webpackConfig, _mergeConfig)

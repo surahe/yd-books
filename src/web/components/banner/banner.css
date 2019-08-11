@@ -1,0 +1,27 @@
+:root {
+  --mainColor: #12345678;
+  --booksUnit:80px;
+  --listWidth:100px;
+}
+
+.components-banner {
+  overflow: hidden;
+  & .nav {
+    list-style: none;
+    background: var(--mainColor);
+  }
+  & .nav__item {
+    height: var(--booksUnit);
+    width: var(--listWidth);
+    line-height: var(--booksUnit);
+    float: left;
+    list-style: none;
+    & a{
+      text-decoration: none;
+      color: #fff;
+    }
+  }
+  & .nav__item--active {
+    color: teal;
+  }
+}
